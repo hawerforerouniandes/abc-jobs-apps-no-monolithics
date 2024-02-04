@@ -1,0 +1,119 @@
+Domain InspeccionMercado {
+  domainVisionStatement = "Toma de decisiones de mercado inmobiliario."
+
+  Subdomain AnalisisMercado {
+    type = CORE_DOMAIN
+    domainVisionStatement = "Analizar tendencias del mercado, precios y demanda para proveer insights accionables para inversores y partes interesadas."
+
+    Entity TendenciaMercado {
+      String nombreTendencia
+      String descripcion
+    }
+
+    Entity OportunidadInversion {
+      String idOportunidad
+      String ubicacion
+      Float valorPotencial
+    }
+  }
+
+  Subdomain InvestigacionPropiedades {
+    type = CORE_DOMAIN
+    domainVisionStatement = "Realizar estudios detallados de propiedades específicas, incluyendo historia, valoración y potencial de inversión, para apoyar estrategias de adquisición y desarrollo."
+
+    Entity DetallePropiedad {
+      String idPropiedad
+      String datosCatastrales
+      String planosArquitectonicos
+    }
+  }
+}
+
+Domain GestionActivosPropiedades {
+  domainVisionStatement = "Gestión operativa y el desarrollo estratégico de activos inmobiliarios."
+
+  Subdomain OperacionesPropiedades {
+    type = CORE_DOMAIN
+    domainVisionStatement = "Gestionar el mantenimiento de propiedades, relaciones con inquilinos y eficiencia operativa para asegurar altos estándares de rendimiento de activos y satisfacción del inquilino."
+
+    Entity Propiedad {
+      String idPropiedad
+      String direccion
+      Float metrosCuadrados
+    }
+
+    Entity ContratoArrendamiento {
+      String idContrato
+      String idInquilino
+      Date fechaInicio
+      Date fechaFin
+      Float rentaMensual
+    }
+  }
+
+  Subdomain ProyectosDesarrollo {
+    type = CORE_DOMAIN
+    domainVisionStatement = "Supervisar proyectos de construcción y renovación para mejorar o expandir el portafolio de activos"
+
+    Entity ProyectoDesarrollo {
+      String idProyecto
+      String nombreProyecto
+      String estado
+      Date fechaFinalizacion
+    }
+  }
+}
+
+Domain ServiciosAlCliente {
+  domainVisionStatement = "Ofrecer experiencias excepcionales y servicios personalizados a los clientes."
+
+  Subdomain SoporteAlCliente {
+    type = CORE_DOMAIN
+    domainVisionStatement = "Proveer soporte y servicios de consultoría de primer nivel."
+
+    Entity PerfilCliente {
+      String idCliente
+      String nombre
+      String informacionContacto
+    }
+  }
+
+  Subdomain InteraccionDigital {
+    type = CORE_DOMAIN
+    domainVisionStatement = "Desarrollar y mantener interfaces digitales para la interacción del cliente."
+
+    Entity PlataformaDigital {
+      String idPlataforma
+      String conjuntoDeCaracteristicas
+      String retroalimentacionDelUsuario
+    }
+  }
+}
+
+Domain GestionDatosAnalitica {
+  domainVisionStatement = "Asegurar la integridad, precisión y usabilidad de los datos inmobiliarios."
+
+  Subdomain RecoleccionIntegracionDatos {
+    type = CORE_DOMAIN
+    domainVisionStatement = "Agregar e integrar datos de fuentes diversas, tanto manuales como automatizadas, para construir un repositorio comprensivo de datos inmobiliarios."
+
+    Entity IngestaDeDatos {
+      String idFuente
+      String tipoDeDato
+      Date fechaDeIngesta
+    }
+  }
+
+  Subdomain AseguramientoCalidad {
+    type = CORE_DOMAIN
+    domainVisionStatement = "Aplicar procesos de auditoría y enriquecimiento de datos para validar y mejorar la calidad de los datos."
+
+    Entity AuditoriaDeDatos {
+      String idAuditoria
+      String idConjuntoDeDatos
+      Float indiceDeConfiabilidad
+      Boolean resultadoDeAuditoria
+    }
+  }
+
+}
