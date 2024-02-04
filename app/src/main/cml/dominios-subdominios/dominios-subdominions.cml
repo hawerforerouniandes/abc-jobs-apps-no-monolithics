@@ -1,80 +1,182 @@
-Domain PropiedadesDeLosAlpes {
-  domainVisionStatement = "Visión global de Propiedades de los Alpes, enfocada en proporcionar información detallada y servicios sobre bienes raíces comerciales y residenciales."
+ContextMap PropiedadesDeLosAlpes {
+  contains ModuloPropiedadesComerciales, ModuloPropiedadesResidenciales
+  contains ModuloTransaccionesArrendamientos, ModuloTransaccionesVentas
+  contains ModuloAnalisisMercadoTendencias, ModuloAnalisisMercadoComparativos
+  contains ModuloServiciosDatosAdquisicion, ModuloServiciosDatosTecnologia
+  contains ModuloRelacionesClientesAsesoria, ModuloRelacionesClientesMarketing
 
-  Subdomain GestionPropiedadesComerciales {
-    type = CORE_DOMAIN
-    domainVisionStatement = "Gestión integral de propiedades comerciales, desde la adquisición de datos hasta la realización de transacciones."
-
-    Entity Edificio {
-      String nombre
-      String direccion
-    }
-
-    Entity Oficina {
-      String numero
-      String piso
-    }
+  ModuloPropiedadesComerciales [OHS, PL] -> ModuloTransaccionesArrendamientos {
+    exposedAggregates PropiedadComercial
   }
 
-  Subdomain GestionPropiedadesResidenciales {
-    type = CORE_DOMAIN
-    domainVisionStatement = "Manejo y análisis de propiedades residenciales, ofreciendo información precisa para decisiones de compra y venta."
-
-    Entity Vivienda {
-      String tipo
-      String direccion
-    }
-
-    Entity Apartamento {
-      String numero
-      String piso
-    }
+  ModuloPropiedadesResidenciales [OHS, PL] -> ModuloTransaccionesVentas {
+    exposedAggregates PropiedadResidencial
   }
 
-  Subdomain TransaccionesInmobiliarias {
-    type = SUPPORTING_DOMAIN
-    domainVisionStatement = "Facilitar transacciones inmobiliarias eficientes y transparentes, incluyendo arrendamientos y ventas."
-
-    Entity Contrato {
-      String tipo
-      Date fechaInicio
-      Date fechaFin
-    }
-
-    Entity Cliente {
-      String nombre
-      String contacto
-    }
+  ModuloServiciosDatosAdquisicion [OHS, PL] -> ModuloAnalisisMercadoTendencias {
+    exposedAggregates AdquisicionDatos
   }
 
-  Subdomain AnalisisDeMercado {
-    type = SUPPORTING_DOMAIN
-    domainVisionStatement = "Proporcionar análisis detallados del mercado inmobiliario, identificando tendencias y oportunidades de inversión."
-
-    Entity InformeMercado {
-      Date fecha
-      String conclusiones
-    }
+  ModuloServiciosDatosAdquisicion [OHS, PL] -> ModuloAnalisisMercadoComparativos {
+    exposedAggregates AdquisicionDatos
   }
 
-  Subdomain ServiciosDeDatosYTecnologia {
-    type = GENERIC_SUBDOMAIN
-    domainVisionStatement = "Desarrollar y mantener una infraestructura tecnológica robusta, asegurando la captura y procesamiento eficiente de datos."
-
-    Entity SistemaInformacion {
-      String nombre
-      String caracteristicas
-    }
+  ModuloTransaccionesArrendamientos [OHS, PL] -> [ACL] ModuloRelacionesClientesMarketing {
+    exposedAggregates Arrendamiento
   }
 
-  Subdomain RelacionesConClientesYMarketing {
-    type = SUPPORTING_DOMAIN
-    domainVisionStatement = "Fortalecer las relaciones con clientes y promover la marca a través de estrategias efectivas de marketing y asesoría."
+  ModuloTransaccionesVentas [OHS, PL] -> [CF] ModuloRelacionesClientesAsesoria {
+    exposedAggregates Venta
+  }
 
-    Entity EstrategiaMarketing {
-      String enfoque
-      String objetivos
-    }
+  ModuloServiciosDatosTecnologia [OHS, PL] -> ModuloPropiedadesComerciales {
+    exposedAggregates InfraestructuraTecnologica
+  }
+
+  ModuloServiciosDatosTecnologia [OHS, PL] -> ModuloPropiedadesResidenciales {
+    exposedAggregates InfraestructuraTecnologica
+  }
+
+}
+
+
+BoundedContext ModuloPropiedadesComerciales {
+  type FEATURE // CORE: Esencial para el negocio
+  domainVisionStatement = "Ser el referente líder en el mercado para la gestión de propiedades comerciales."
+
+  Aggregate PropiedadComercial {
+    Entity Edificio { attribute nombre; attribute direccion; }
+    Entity Oficina { attribute numero; attribute piso; }
   }
 }
 
+BoundedContext ModuloPropiedadesResidenciales {
+  type FEATURE // CORE: Esencial para el negocio
+  domainVisionStatement = "Facilitar información exhaustiva y precisa sobre propiedades residenciales."
+
+  Aggregate PropiedadResidencial {
+    Entity Vivienda { attribute tipo; attribute direccion; }
+    Entity Apartamento { attribute numero; attribute piso; }
+  }
+}
+
+BoundedContext ModuloTransaccionesArrendamientos {
+  type FEATURE // SUPPORTING: Importante pero no crítico
+  domainVisionStatement = "Asegurar transacciones de arrendamiento actualizadas y confiables."
+
+  Aggregate Arrendamiento {
+    Entity Contrato { attribute fechaInicio; attribute fechaFin; }
+    Entity Arrendador { attribute nombre; attribute contacto; }
+    Entity Arrendatario { attribute nombre; attribute contacto; }
+  }
+}
+
+BoundedContext ModuloTransaccionesVentas {
+  type FEATURE // SUPPORTING: Importante pero no crítico
+  domainVisionStatement = "Maximizar el éxito en transacciones de venta de propiedades."
+
+  Aggregate Venta {
+    Entity ContratoVenta { attribute fecha; attribute detalles; }
+    Entity Comprador { attribute nombre; attribute contacto; }
+    Entity Vendedor { attribute nombre; attribute contacto; }
+  }
+}
+
+BoundedContext ModuloAnalisisMercadoTendencias {
+  type FEATURE // SUPPORTING: Proporciona valor adicional
+  domainVisionStatement = "Identificar tendencias y oportunidades en el mercado inmobiliario."
+
+  Aggregate AnalisisTendencia {
+    Entity Informe { attribute fecha; attribute conclusiones; }
+  }
+}
+
+BoundedContext ModuloAnalisisMercadoComparativos {
+  type FEATURE // SUPPORTING: Proporciona valor adicional
+  domainVisionStatement = "Proveer comparativos detallados para evaluación de valor de mercado."
+
+  Aggregate ComparativoVenta {
+    Entity Transaccion { attribute fecha; attribute valor; }
+  }
+}
+
+BoundedContext ModuloServiciosDatosAdquisicion {
+  type FEATURE // CORE: Fundamental para la operación del negocio
+  domainVisionStatement = "Innovar en la captura y procesamiento de datos de propiedades."
+
+  Aggregate AdquisicionDatos {
+    Entity FuenteDatos { attribute tipo; attribute detalles; }
+  }
+}
+
+BoundedContext ModuloServiciosDatosTecnologia {
+  type SYSTEM // CORE: Infraestructura crítica
+  domainVisionStatement = "Mantener una infraestructura tecnológica escalable y eficiente."
+
+  Aggregate InfraestructuraTecnologica {
+    Entity Sistema { attribute nombre; attribute caracteristicas; }
+  }
+}
+
+BoundedContext ModuloRelacionesClientesAsesoria {
+  type FEATURE // SUPPORTING: Facilita las operaciones del negocio
+  domainVisionStatement = "Brindar servicio excepcional y asesoría experta a nuestros clientes."
+
+  Aggregate AsesoriaCliente {
+    Entity Consultor { attribute nombre; attribute especialidad; }
+  }
+}
+
+BoundedContext ModuloRelacionesClientesMarketing {
+  type APPLICATION // SUPPORTING: Herramienta para alcanzar objetivos de negocio
+  domainVisionStatement = "Impulsar el crecimiento de la marca a través de marketing innovador."
+
+  Aggregate EstrategiaMarketing {
+    Entity Campana { attribute nombre; attribute alcance; }
+  }
+}
+
+
+
+Domain PropiedadesDomain {
+
+    Subdomain ModuloPropiedadesComerciales {
+      type CORE_DOMAIN
+    }
+
+    Subdomain ModuloPropiedadesResidenciales {
+      type CORE_DOMAIN
+    }
+
+    Subdomain ModuloTransaccionesArrendamientos {
+      type SUPPORTING_DOMAIN
+    }
+
+    Subdomain ModuloTransaccionesVentas {
+      type SUPPORTING_DOMAIN
+    }
+
+    Subdomain ModuloAnalisisMercadoTendencias {
+      type CORE_DOMAIN
+    }
+
+    Subdomain ModuloAnalisisMercadoComparativos {
+      type CORE_DOMAIN
+    }
+
+    Subdomain ModuloServiciosDatosAdquisicion {
+      type CORE_DOMAIN
+    }
+
+    Subdomain ModuloServiciosDatosTecnologia {
+      type SUPPORTING_DOMAIN
+    }
+
+    Subdomain ModuloRelacionesClientesAsesoria {
+      type SUPPORTING_DOMAIN
+    }
+
+    Subdomain ModuloRelacionesClientesMarketing {
+      type SUPPORTING_DOMAIN
+    }
+}
