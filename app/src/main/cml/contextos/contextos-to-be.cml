@@ -1,0 +1,53 @@
+/* Contextos Acotados y Relaciones para 'Propiedades de los Alpes' - TO-BE */
+
+ContextMap PropiedadesDeLosAlpesMapTOBE {
+  contains CaracteristicasDePropiedadesGlobalizadas
+  contains GestionDeDisponibilidadInternacional
+  contains TransaccionesInternacionales
+  contains InformacionGlobalDeInquilinos
+  contains AnalisisGlobalDeMercadoYPropiedades
+  contains SoporteYOperacionesGlobales
+  contains IntegracionYHomogeneizacionDeDatos
+
+  CaracteristicasDePropiedadesGlobalizadas [SK]<->[SK] AnalisisGlobalDeMercadoYPropiedades
+  GestionDeDisponibilidadInternacional [SK]<->[SK] TransaccionesInternacionales
+  InformacionGlobalDeInquilinos [P]<->[P] TransaccionesInternacionales
+  SoporteYOperacionesGlobales [SK]<->[SK] IntegracionYHomogeneizacionDeDatos
+}
+
+/* Definiciones de Bounded Context TO-BE */
+
+BoundedContext CaracteristicasDePropiedadesGlobalizadas {
+  type = FEATURE
+  domainVisionStatement = "Amplía su alcance para incluir propiedades en nuevos mercados internacionales, considerando diferentes normativas y tipos de propiedades."
+}
+
+BoundedContext GestionDeDisponibilidadInternacional {
+  type = FEATURE
+  domainVisionStatement = "Adapta los listados de propiedades para acomodar diferencias en los mercados de alquiler y venta a nivel global."
+}
+
+BoundedContext TransaccionesInternacionales {
+  type = FEATURE
+  domainVisionStatement = "Maneja la diversidad de transacciones de arrendamiento y ventas en diferentes mercados y jurisdicciones."
+}
+
+BoundedContext InformacionGlobalDeInquilinos {
+  type = FEATURE
+  domainVisionStatement = "Extiende sus capacidades para recopilar y verificar información de inquilinos en un contexto internacional."
+}
+
+BoundedContext AnalisisGlobalDeMercadoYPropiedades {
+  type = FEATURE
+  domainVisionStatement = "Proporciona análisis y comparaciones adaptados a las características específicas de cada mercado internacional."
+}
+
+BoundedContext SoporteYOperacionesGlobales {
+  type = SYSTEM
+  domainVisionStatement = "Adapta los sistemas de soporte interno para manejar la diversidad y la escala de las operaciones globales."
+}
+
+BoundedContext IntegracionYHomogeneizacionDeDatos {
+  type = SYSTEM
+  domainVisionStatement = "Establece procesos para integrar y homogeneizar datos de múltiples mercados, manteniendo la calidad y la relevancia."
+}

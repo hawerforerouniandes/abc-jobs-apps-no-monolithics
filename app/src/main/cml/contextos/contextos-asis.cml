@@ -1,0 +1,53 @@
+/* Contextos Acotados y Relaciones para 'Propiedades de los Alpes' */
+
+ContextMap PropiedadesDeLosAlpesMap {
+  contains CaracteristicasDePropiedades
+  contains Disponibilidad
+  contains Transacciones
+  contains InformacionDeInquilinos
+  contains AnalisisDeMercadoYPropiedades
+  contains SistemasDeSoporteInterno
+  contains IngestionYProcesamientoDeDatos
+
+  CaracteristicasDePropiedades [SK]<->[SK] AnalisisDeMercadoYPropiedades
+  Disponibilidad [SK]<->[SK] Transacciones
+  InformacionDeInquilinos [P]<->[P] Transacciones
+  SistemasDeSoporteInterno [SK]<->[SK] IngestionYProcesamientoDeDatos
+}
+
+/* Definiciones de Bounded Context */
+
+BoundedContext CaracteristicasDePropiedades {
+  type = FEATURE
+  domainVisionStatement = "Gestiona la recopilación y presentación de detalles físicos y fotografías de las propiedades."
+}
+
+BoundedContext Disponibilidad {
+  type = FEATURE
+  domainVisionStatement = "Maneja la identificación, entrada y mantenimiento de listados de propiedades para alquiler, subarrendamiento y venta."
+}
+
+BoundedContext Transacciones {
+  type = FEATURE
+  domainVisionStatement = "Trata con la adquisición, ingreso y actualización de información sobre arrendamientos y ventas de propiedades."
+}
+
+BoundedContext InformacionDeInquilinos {
+  type = FEATURE
+  domainVisionStatement = "Recopila y verifica información de los inquilinos, incluyendo detalles de contacto y transacciones."
+}
+
+BoundedContext AnalisisDeMercadoYPropiedades {
+  type = FEATURE
+  domainVisionStatement = "Proporciona herramientas y datos para analizar el mercado y comparar propiedades."
+}
+
+BoundedContext SistemasDeSoporteInterno {
+  type = SYSTEM
+  domainVisionStatement = "Incluye sistemas para analistas e investigadores, validación de datos, enriquecimiento de datos, etc."
+}
+
+BoundedContext IngestionYProcesamientoDeDatos {
+  type = SYSTEM
+  domainVisionStatement = "Captura y procesa datos de diversas fuentes, asegurando calidad y consistencia."
+}
